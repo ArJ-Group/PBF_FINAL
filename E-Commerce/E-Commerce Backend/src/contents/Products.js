@@ -48,4 +48,76 @@ import {
       }
     }, [props.product]);
   
-}
+    const onAddFinish = (values) => {
+      let body = {
+        ...values.product,
+        rate: parseInt(values.product.rate),
+        price: parseInt(values.product.price),
+        stock: parseInt(values.product.stock),
+        id: "PROD" + new Date().getTime().toString(),
+      };
+      props.addProduct(body);
+    };
+    const AddProductForm = () => {
+      return (
+        <Form
+          labelCol={{
+            span: 10,
+          }}
+          wrapperCol={{}}
+          layout="vertical"
+          initialValues={{}}
+          onFinish={onAddFinish}
+        >
+          <Form.Item
+            name={["product", "name"]}
+            label="Product Name"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={["product", "img"]}
+            label="Image Link"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={["product", "desc"]}
+            label="Description"
+            rules={[{ required: true }]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+          <Form.Item
+            name={["product", "price"]}
+            label="Price"
+            rules={[{ required: true }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name={["product", "rate"]}
+            label="Rating"
+            rules={[{ required: true }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name={["product", "stock"]}
+            label="Stock"
+            rules={[{ required: true }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item style={{ textAlign: "center" }}>
+            <Button type="primary" htmlType="submit" loading={dataloading}>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      );
+    };
+  
+};
