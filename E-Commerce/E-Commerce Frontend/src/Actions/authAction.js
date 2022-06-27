@@ -36,23 +36,6 @@ export const authenticate = (username, password) =>{
     }
 }
 
-export const logout = () =>{
-    return (dispatch) =>{
-        FirebaseApp.auth().signOut()
-        .then(val=>{
-            dispatch({
-                type: 'USER_LOGOUT',
-                auth: false
-            })
-        }).catch(()=>{
-            dispatch({
-                type: 'USER_LOGOUT',
-                auth: true
-            })
-        })
-    }
-}
-
 export const register = (user)=>{
     return dispatch =>{
         FirebaseApp.auth().createUserWithEmailAndPassword(user.email, user.password).then(credential=>{
@@ -79,6 +62,23 @@ export const register = (user)=>{
                 loading: false,
                 loginfailed: true,
                 user: null
+            })
+        })
+    }
+}
+
+export const logout = () =>{
+    return (dispatch) =>{
+        FirebaseApp.auth().signOut()
+        .then(val=>{
+            dispatch({
+                type: 'USER_LOGOUT',
+                auth: false
+            })
+        }).catch(()=>{
+            dispatch({
+                type: 'USER_LOGOUT',
+                auth: true
             })
         })
     }
