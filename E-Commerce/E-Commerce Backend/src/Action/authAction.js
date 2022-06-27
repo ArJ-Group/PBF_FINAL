@@ -4,7 +4,7 @@ export const authenticate = (admin) =>{
     return dispatch =>{
         dispatch({
             type: 'AUTH_SIGNIN',
-            status: 'SIGNIN-REQUEST',
+            status: 'SIGNIN_REQUEST',
             loading: true
         })
         const authRef = firebaseApp.auth()
@@ -14,7 +14,7 @@ export const authenticate = (admin) =>{
                 .then( idToken =>{
                     dispatch({
                         type: 'AUTH_SIGNIN',
-                        status: 'SIGNIN-SUCCESS',
+                        status: 'SIGNIN_SUCCESS',
                         loading: false,
                         auth : true,
                         userid: idToken.token
