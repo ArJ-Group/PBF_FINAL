@@ -107,4 +107,80 @@ const UserComponent = (props) => {
       </Modal>
     );
   };
+
+  const UserTable = () => {
+    const column = [
+      {
+        title: "Email",
+        dataIndex: 0,
+        key: "email",
+        render: (text) => text.replace("_", "."),
+      },
+      {
+        title: "Name",
+        dataIndex: 1,
+        key: "name",
+        render: (info) => {
+          return info.name;
+        },
+      },
+      {
+        title: "Phone",
+        dataIndex: 1,
+        key: "phone",
+        render: (info) => info.phone,
+      },
+      {
+        title: "Address",
+        dataIndex: 1,
+        key: "address",
+        render: (info) => info.address,
+      },
+      {
+        title: "Action",
+        dataIndex: 1,
+        key: "action",
+        render: (_, item) => (
+          <a onClick={() => showUpdate(item)}>
+            <EditTwoTone />
+          </a>
+        ),
+      },
+    ];
+
+    return (
+      <div>
+        <Table columns={column} dataSource={users} loading={userLoading}/>
+        <UpdateModal />
+      </div>
+    );
+  };
+  return (
+    <div>
+    <Input
+    size="large"
+    placeholder="Search Users"
+    prefix={<SearchOutlined />}
+    onChange={onSearch}
+    style={{ width: 300, margin: 20}}
+  />
+    <UserTable />
+    </div>
+  )
 };
+
+const mapStateToProps = (state) => {
+  return {
+    ...state,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators(
+    {
+      fetchUser,
+      updateUser,
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(UserComponent);
