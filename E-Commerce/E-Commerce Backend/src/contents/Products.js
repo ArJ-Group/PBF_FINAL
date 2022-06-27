@@ -219,4 +219,178 @@ import {
         />
       );
     };
-};
+  
+    const updateProduct = (product) => {
+      let body = {
+        ...product,
+        rate: parseInt(product.rate),
+        price: parseInt(product.price),
+        stock: parseInt(product.stock),
+      };
+      props.updateProduct(body);
+    };
+    const showUpdate = (item) => {
+      setShowUpdateModal(true);
+      setProductUpdate(item);
+    };
+    const closeUpdate = () => {
+      setShowUpdateModal(false);
+    };
+  
+    const UpdateModal = () => {
+      const onUpdateFinish = (values) => {
+        updateProduct(values.product);
+        closeUpdate();
+      };
+      return (
+        <Modal
+          title="Update"
+          visible={showUpdateModal}
+          onCancel={closeUpdate}
+          footer={[]}
+        >
+          <Form
+            labelCol={{
+              span: 10,
+            }}
+            wrapperCol={{}}
+            layout="vertical"
+            onFinish={onUpdateFinish}
+            initialValues={{
+              product: productUpdate,
+            }}
+          >
+            <Form.Item name={["product", "id"]} noStyle />
+            <Form.Item
+              name={["product", "name"]}
+              label="Product Name"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name={["product", "img"]}
+              label="Image Link"
+              rules={[{ required: true }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name={["product", "desc"]}
+              label="Description"
+              rules={[{ required: true }]}
+            >
+              <Input.TextArea rows={4} />
+            </Form.Item>
+            <Form.Item
+              name={["product", "price"]}
+              label="Price"
+              rules={[{ required: true }]}
+            >
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item
+              name={["product", "rate"]}
+              label="Rating"
+              rules={[{ required: true }]}
+            >
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item
+              name={["product", "stock"]}
+              label="Stock"
+              rules={[{ required: true }]}
+            >
+              <Input type="number" />
+            </Form.Item>
+            <Form.Item style={{ textAlign: "center" }}>
+              <Space>
+                <Button type="ghost" onClick={closeUpdate}>
+                  Cancel
+                </Button>
+                <Button type="primary" htmlType="submit">
+                  Submit
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
+        </Modal>
+      );
+    };
+    const [displayAddForm, setDisplayAddForm] = useState("none");
+    const isDisplayAddForm = displayAddForm === 'none'?false:true
+    return (
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <Row gutter={24}>
+          <Col className='animate-box' span={isDisplayAddForm ? (
+                  6
+                ) : (
+                  0
+                )} style={{ display: displayAddForm }} >
+            <Title level={3} style={{ textAlign: "center" }}>
+              Add Product
+            </Title>
+            <AddProductForm />
+          </Col>
+          <Col span={1} style={{display:'flex', flexDirection:'column',alignItems:'flex-start'}}>
+            <Tooltip  title={'Add New Product'} placement='bottom'>
+            <Button
+              shape="circle"
+              onClick={() =>
+                displayAddForm === "none"
+                  ? setDisplayAddForm("inline")
+                  : setDisplayAddForm("none")
+              }
+              icon={
+                !isDisplayAddForm ? (
+                  <ArrowRightOutlined />
+                ) : (
+                  <ArrowLeftOutlined />
+                )
+              }
+            />
+            </Tooltip>
+          </Col>
+          <Col span={displayAddForm === "none" ? (
+                  23
+                ) : (
+                  17
+                )}>
+              <Space direction="vertical">
+                <Input
+                  size="large"
+                  placeholder="Search Products"
+                  prefix={<SearchOutlined />}
+                  onChange={onSearch}
+                  style={{ width: 300, marginBottom: 10}}
+                />
+                {onSearchError && (
+                  <Alert type="error" message="Cannot Find Product" closable />
+                )}
+              </Space>
+              <ProductTable />
+            <UpdateModal />
+          </Col>
+        </Row>
+      </div>
+    );
+  };
+  
+  const mapStateToProps = (state) => {
+    return { ...state };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators(
+      {
+        fetchProduct,
+        addProduct,
+        deleteProduct,
+        updateProduct,
+      },
+      dispatch
+    );
+  };
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(ProductComponent);
+  
