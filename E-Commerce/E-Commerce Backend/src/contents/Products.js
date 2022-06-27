@@ -120,4 +120,103 @@ import {
       );
     };
   
+    const deleteProduct = (id) => {
+      props.deleteProduct(id);
+    };
+    const [onSearchError, setOnSearchError] = useState(false);
+    const onSearch = (text) => {
+      if (text.target.value) {
+        let searchedData = props.product.products.filter((item) => {
+          return item.name.toLowerCase().match(text.target.value.toLowerCase());
+        });
+        if (searchedData.length > 0) {
+          setData(searchedData);
+          setOnSearchError(false);
+        } else {
+          setData(props.product.products);
+          setOnSearchError(true);
+        }
+      } else {
+        setData(props.product.products);
+      }
+    };
+    const ProductTable = () => {
+      const fontSize = (size) => {
+        return {
+          fontSize: size,
+        };
+      };
+      const columns = [
+        {
+          title: "Image",
+          dataIndex: "img",
+          key: "img",
+          render: (link) => <Image width={100} src={link} />,
+        },
+        {
+          title: "Name",
+          dataIndex: "name",
+          key: "name",
+        },
+        {
+          title: "Price",
+          dataIndex: "price",
+          key: "price",
+          sorter: (a, b) => a.price - b.price,
+        },
+        {
+          title: "Description",
+          dataIndex: "desc",
+          key: "desc",
+          render: (text) => text.substring(0, 1000)+'.',
+        },
+        {
+          title: "Rating",
+          dataIndex: "rate",
+          key: "rate",
+        },
+        {
+          title: "Stock",
+          dataIndex: "stock",
+          key: "stock",
+        },
+        {
+          title: "Action",
+          dataIndex: "id",
+          key: "action",
+          render: (id, item) => {
+            return (
+              <div>
+                <Space direction="horizontal">
+                  <Popconfirm
+                    title="Sure to Delete?"
+                    onConfirm={() => deleteProduct(id)}
+                  >
+                    <a>
+                      <DeleteTwoTone
+                        twoToneColor="red"
+                        width={100}
+                        style={fontSize(16)}
+                      />
+                    </a>
+                  </Popconfirm>
+                  <a onClick={() => showUpdate(item)}>
+                    <EditTwoTone style={fontSize(16)} />
+                  </a>
+                </Space>
+              </div>
+            );
+          },
+        },
+      ];
+      return (
+        <Table
+          size="small"
+          loading={dataloading}
+          columns={columns}
+          dataSource={data}
+          style={{alignSelf: 'stretch'}}
+        />
+      );
+    };
 };
