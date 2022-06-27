@@ -48,4 +48,63 @@ const UserComponent = (props) => {
       setUsers(Object.entries(props.user.users))
     }
   };
+  const UpdateModal = () => {
+    const onUpdateFinish = (values) => {
+      updateUser(values.user);
+      closeUpdate();
+    };
+    return (
+      <Modal
+        title={showUpdateModal && userUpdate.id.replace("_", ".")}
+        visible={showUpdateModal}
+        onCancel={closeUpdate}
+        footer={[]}
+      >
+        <Form
+          labelCol={{
+            span: 10,
+          }}
+          wrapperCol={{}}
+          layout="vertical"
+          onFinish={onUpdateFinish}
+          initialValues={{
+            user: userUpdate,
+          }}
+        >
+          <Form.Item name={["user", "id"]} noStyle />
+          <Form.Item
+            name={["user", "name"]}
+            label="User Name"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={["user", "phone"]}
+            label="Phone Number"
+            rules={[{ required: true }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name={["user", "address"]}
+            label="Address"
+            rules={[{ required: true }]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+          <Form.Item style={{ textAlign: "center" }}>
+            <Space>
+              <Button type="ghost" onClick={closeUpdate}>
+                Cancel
+              </Button>
+              <Button type="primary" htmlType="submit">
+                Save
+              </Button>
+            </Space>
+          </Form.Item>
+        </Form>
+      </Modal>
+    );
+  };
 };
